@@ -14,9 +14,11 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useRegisterUser } from "@/hooks/mutations/use-register-user";
 
 export default function RegisterPage() {
   const router = useRouter();
+  const { mutateAsync: register, isPending } = useRegisterUser();
   const [formData, setFormData] = useState({
     name: "",
     rollNumber: "",
@@ -25,7 +27,6 @@ export default function RegisterPage() {
     password: "",
     confirmPassword: "",
   });
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -61,28 +62,18 @@ export default function RegisterPage() {
       return;
     }
 
-    setLoading(true);
-
     try {
-      const response = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: formData.name,
-          rollNumber: formData.rollNumber,
-          email: formData.email,
-          phone: formData.phone,
-          password: formData.password,
-        }),
+      const result = await register({
+        name: formData.name,
+        rollNumber: formData.rollNumber,
+        email: formData.email,
+        phone: formData.phone,
+        password: formData.password,
       });
 
-      const data = (await response.json()) as {
-        error?: string;
-        success?: boolean;
-      };
-
-      if (!response.ok) {
-        throw new Error(data.error || "নিবন্ধন ব্যর্থ হয়েছে");
+      if (!result.success) {
+        setError(result.error || "নিবন্ধন ব্যর্থ হয়েছে");
+        return;
       }
 
       router.push("/login");
@@ -92,8 +83,6 @@ export default function RegisterPage() {
           ? err.message
           : "নিবন্ধন ব্যর্থ হয়েছে। পুনরায় চেষ্টা করুন।",
       );
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -134,9 +123,9 @@ export default function RegisterPage() {
                     placeholder="আপনার নাম"
                     value={formData.name}
                     onChange={handleChange}
-                    disabled={loading}
+                    disabled={isPending}
                     required
-                    className="px-4 py-2.5 rounded-lg border border-input focus:border-primary focus:ring-2 focus:ring-primary/20 bg-muted/30 focus:bg-background transition-all"
+                    className="px-4 rounded-lg border border-input focus:border-primary focus:ring-2 focus:ring-primary/20 bg-muted/30 focus:bg-background transition-all"
                   />
                 </div>
                 <div className="space-y-2">
@@ -153,9 +142,9 @@ export default function RegisterPage() {
                     placeholder="আপনার রোল"
                     value={formData.rollNumber}
                     onChange={handleChange}
-                    disabled={loading}
+                    disabled={isPending}
                     required
-                    className="px-4 py-2.5 rounded-lg border border-input focus:border-primary focus:ring-2 focus:ring-primary/20 bg-muted/30 focus:bg-background transition-all"
+                    className="px-4 rounded-lg border border-input focus:border-primary focus:ring-2 focus:ring-primary/20 bg-muted/30 focus:bg-background transition-all"
                   />
                 </div>
               </div>
@@ -174,9 +163,9 @@ export default function RegisterPage() {
                   placeholder="আপনার ইমেইল"
                   value={formData.email}
                   onChange={handleChange}
-                  disabled={loading}
+                  disabled={isPending}
                   required
-                  className="px-4 py-2.5 rounded-lg border border-input focus:border-primary focus:ring-2 focus:ring-primary/20 bg-muted/30 focus:bg-background transition-all"
+                  className="px-4 rounded-lg border border-input focus:border-primary focus:ring-2 focus:ring-primary/20 bg-muted/30 focus:bg-background transition-all"
                 />
               </div>
 
@@ -194,9 +183,9 @@ export default function RegisterPage() {
                   placeholder="আপনার ফোন নম্বর"
                   value={formData.phone}
                   onChange={handleChange}
-                  disabled={loading}
+                  disabled={isPending}
                   required
-                  className="px-4 py-2.5 rounded-lg border border-input focus:border-primary focus:ring-2 focus:ring-primary/20 bg-muted/30 focus:bg-background transition-all"
+                  className="px-4 rounded-lg border border-input focus:border-primary focus:ring-2 focus:ring-primary/20 bg-muted/30 focus:bg-background transition-all"
                 />
               </div>
 
@@ -215,14 +204,14 @@ export default function RegisterPage() {
                     placeholder="আপনার পাসওয়ার্ড"
                     value={formData.password}
                     onChange={handleChange}
-                    disabled={loading}
+                    disabled={isPending}
                     required
-                    className="px-4 py-2.5 rounded-lg border border-input focus:border-primary focus:ring-2 focus:ring-primary/20 bg-muted/30 focus:bg-background transition-all pr-10"
+                    className="px-4 rounded-lg border border-input focus:border-primary focus:ring-2 focus:ring-primary/20 bg-muted/30 focus:bg-background transition-all pr-10"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    disabled={loading}
+                    disabled={isPending}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50"
                   >
                     {showPassword ? (
@@ -249,14 +238,14 @@ export default function RegisterPage() {
                     placeholder="পাসওয়ার্ড পুনরায় লিখুন"
                     value={formData.confirmPassword}
                     onChange={handleChange}
-                    disabled={loading}
+                    disabled={isPending}
                     required
-                    className="px-4 py-2.5 rounded-lg border border-input focus:border-primary focus:ring-2 focus:ring-primary/20 bg-muted/30 focus:bg-background transition-all pr-10"
+                    className="px-4 rounded-lg border border-input focus:border-primary focus:ring-2 focus:ring-primary/20 bg-muted/30 focus:bg-background transition-all pr-10"
                   />
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    disabled={loading}
+                    disabled={isPending}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50"
                   >
                     {showConfirmPassword ? (
@@ -278,10 +267,10 @@ export default function RegisterPage() {
 
               <Button
                 type="submit"
-                disabled={loading}
-                className="w-full py-2.5 font-semibold text-primary-foreground bg-primary hover:bg-primary/90 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed"
+                disabled={isPending}
+                className="w-full font-semibold text-primary-foreground bg-primary hover:bg-primary/90 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                {loading ? (
+                {isPending ? (
                   <div className="flex items-center justify-center gap-2">
                     <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
                     নিবন্ধন করা হচ্ছে...

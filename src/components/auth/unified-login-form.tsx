@@ -122,7 +122,7 @@ export function UnifiedLoginForm({
                   onChange={(e) => setEmail(e.target.value)}
                   disabled={loading}
                   required
-                  className="px-4 py-2.5 rounded-lg border border-input focus:border-primary focus:ring-2 focus:ring-primary/20 bg-muted/30 focus:bg-background transition-all"
+                  className="px-4 rounded-lg border border-input focus:border-primary focus:ring-2 focus:ring-primary/20 bg-muted/30 focus:bg-background transition-all"
                 />
               </div>
 
@@ -150,7 +150,7 @@ export function UnifiedLoginForm({
                     onChange={(e) => setPassword(e.target.value)}
                     disabled={loading}
                     required
-                    className="px-4 py-2.5 rounded-lg border border-input focus:border-primary focus:ring-2 focus:ring-primary/20 bg-muted/30 focus:bg-background transition-all pr-10"
+                    className="px-4 rounded-lg border border-input focus:border-primary focus:ring-2 focus:ring-primary/20 bg-muted/30 focus:bg-background transition-all pr-10"
                   />
                   <button
                     type="button"
@@ -178,7 +178,7 @@ export function UnifiedLoginForm({
               <Button
                 type="submit"
                 disabled={loading}
-                className={`w-full py-2.5 font-semibold text-primary-foreground rounded-lg transition-all duration-200 ${buttonBg} shadow-lg hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed`}
+                className={`w-full font-semibold text-primary-foreground rounded-lg transition-all duration-200 ${buttonBg} shadow-lg hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed`}
               >
                 {loading ? (
                   <div className="flex items-center justify-center gap-2">

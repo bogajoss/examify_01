@@ -38,11 +38,11 @@ export function ThemeToggle() {
   return (
     <Button
       variant="ghost"
-      size="sm"
-      className="h-9 w-9 rounded-full p-0"
+      size="default"
+      className="h-11 w-11 rounded-full p-0"
       onClick={toggleTheme}
     >
-      {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+      {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
     </Button>
   );
 }

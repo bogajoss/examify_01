@@ -1,41 +1,24 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { UnifiedLoginForm } from "@/components/auth/unified-login-form";
-import { useAuth } from "@/context/AuthContext";
+import { useLoginUser } from "@/hooks/mutations/use-login-user";
+import { useState } from "react";
 
 export default function StudentLoginPage() {
   const router = useRouter();
-  const { setUser } = useAuth();
-  const [loading, setLoading] = useState(false);
+  const { mutateAsync: login, isPending } = useLoginUser();
   const [error, setError] = useState("");
 
   const handleSubmit = async (credentials: Record<string, string>) => {
-    setLoading(true);
     setError("");
 
     try {
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(credentials),
-      });
+      const result = await login(credentials);
 
-      const data = (await response.json()) as {
-        error?: string;
-        user?: { name: string; roll: string };
-      };
-
-      if (!response.ok) {
-        throw new Error(data.error || "লগইন ব্যর্থ হয়েছে");
-      }
-
-      if (data.user) {
-        setUser({
-          name: data.user.name,
-          roll: data.user.roll,
-        });
+      if (!result.success) {
+        setError(result.error || "লগইন ব্যর্থ হয়েছে");
+        return;
       }
 
       router.push("/exams");
@@ -45,8 +28,6 @@ export default function StudentLoginPage() {
           ? err.message
           : "লগইন ব্যর্থ হয়েছে। পুনরায় চেষ্টা করুন।",
       );
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -54,7 +35,7 @@ export default function StudentLoginPage() {
     <UnifiedLoginForm
       userType="student"
       onSubmit={handleSubmit}
-      loading={loading}
+      loading={isPending}
       error={error}
     />
   );

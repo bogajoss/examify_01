@@ -65,7 +65,7 @@ function NavItemComponent({
           <button
             className={cn(
               "group relative flex cursor-pointer items-center justify-center rounded-full transition-all duration-300",
-              "h-9 focus-visible:outline-none px-3",
+              "h-11 focus-visible:outline-none px-4",
               "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
               isActive && "bg-primary/10 text-primary font-semibold",
             )}
@@ -105,7 +105,7 @@ function NavItemComponent({
       aria-label={item.label}
       className={cn(
         "relative flex cursor-pointer items-center justify-center rounded-full transition-all duration-300",
-        "h-9 focus-visible:outline-none px-3",
+        "h-11 focus-visible:outline-none px-4",
         "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
         isActive && "bg-primary/10 text-primary font-semibold",
       )}
@@ -184,10 +184,10 @@ export function Header() {
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
-                  size="sm"
-                  className="relative h-9 w-9 rounded-full p-0 hover:bg-accent"
+                  size="default"
+                  className="relative h-11 w-11 rounded-full p-0 hover:bg-accent"
                 >
-                  <Avatar className="h-8 w-8">
+                  <Avatar className="h-10 w-10">
                     <AvatarFallback className="bg-primary/10 text-primary font-bold">
                       <UserIcon className="h-5 w-5" />
                     </AvatarFallback>
