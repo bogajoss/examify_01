@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "undo": "git fetch origin && git reset --hard origin/main && git clean -fd",
-    "push": "git add . && git commit -m 'update' && git push"
+    "push": "git add . && git commit -m 'update' && git push",
+    "setup:appwrite": "node scripts/setup-appwrite.js"
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.1.11",
@@ -18,6 +19,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
+    "dotenv": "^17.2.3",
     "lucide-react": "^0.563.0",
     "next": "16.1.6",
     "node-appwrite": "^21.1.0",

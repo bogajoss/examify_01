@@ -35,7 +35,7 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml"></link>
       </head>
-      <body
+      <body suppressHydrationWarning={true}
         className={`${geistSans.variable} ${geistMono.variable} ${solaimanLipi.variable} antialiased font-solaiman-lipi`}
       >
         <AuthProvider>{children}</AuthProvider>
